@@ -1,0 +1,52 @@
+body {
+    background-color: #ffffff;
+}
+
+.navbar {
+    min-height: 68px;
+    border-bottom: 1px solid #ad0f0f;
+}
+
+.navbar-toggler {
+    border: none;
+    background-color: transparent;
+    color: #ad0f0f;
+}
+
+.navbar-custom {
+    background-color: #ffffff;
+}
+
+.logo-navbar {
+    height: 80px;
+    width: auto;
+}
+
+.navbar-actions {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+}
+
+.btn-publicacion {
+    background-color: #ad0f0f;
+    --bs-btn-hover-bg: #810b0b;
+    border: none;
+    font-size: 15px;
+    font-weight: 600;
+    padding: 10px 15px;
+    border-radius: 5px;
+}
+
+.nav-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.nav-icon img {
+    width: 80px;
+    height: 80px;
+    object-fit: contain;
+}
