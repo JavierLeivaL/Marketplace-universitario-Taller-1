@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="es">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://getbootstrap.com/docs/5.3/assets/css/docs.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script defer src="js/app.js"></script>
+    <title>Marketplace UNAB</title>
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+</head>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-white">
+        <div class="container-fluid navbar-custom">
+
+            <a class="navbar-brand" href="#">
+                <img src="assets/img/logo_marketplace_unab.png" alt="Marketplace UNAB" class="logo-navbar">
+            </a>
+
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContenido"
+                aria-controls="navbarContenido" aria-expanded="false" aria-label="Mostrar menú">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarContenido">
+                <div class="navbar-actions">
+
+                    <a href="#" class="btn btn-primary btn-publicacion">Crear nueva publicación</a>
+
+                    <a href="#" class="nav-icon" aria-label="Favoritos">
+                        <img src="assets/img/icono_fav.png" alt="Favoritos">
+                    </a>
+
+                    <a href="#" class="nav-icon" aria-label="Carrito">
+                        <img src="assets/img/icono_carrito.png" alt="Carrito">
+                    </a>
+
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <div class="container-fluid">
+        <div class="row">
+
+            <aside class="col-12 col-lg-2 order-1 order-lg-1 border-end p-3">
+                <input type="text" class="form-control mb-3" placeholder="Buscador">
+
+                <div class="mb-3 bg-light">
+                    <h6>Filtro de precios</h6>
+                    <label>Min <input type="number" class="form-control mb-2"></label>
+                    <label>Max <input type="number" class="form-control"></label>
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-light w-100 d-flex justify-content-between align-items-center d-lg-none" 
+                        type="button" data-bs-toggle="collapse" data-bs-target="#categorias-collapse">
+                        Categorías
+                        <span>▼</span>
+                    </button>
+                    
+                    <h6 class="d-none d-lg-block">Categorías</h6>
+                    <div id="categorias-collapse" class="collapse d-lg-block">
+                        <div id="nombre-categorias"></div>
+                    </div>
+                </div>
+
+            </aside>
+
+        </div>
+    </div>
+
+</body>
+
+</html>
