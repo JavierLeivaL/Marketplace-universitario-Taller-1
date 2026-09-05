@@ -29,7 +29,9 @@
             <div class="collapse navbar-collapse" id="navbarContenido">
                 <div class="navbar-actions">
 
-                    <a href="#" class="btn btn-primary btn-publicacion">Crear nueva publicación</a>
+                    <a href="#" class="btn btn-primary btn-publicacion" data-bs-toggle="modal" data-bs-target="#modalPublicar">
+                        Crear nueva publicación
+                    </a>
 
                     <a href="#" class="nav-icon" aria-label="Favoritos">
                         <img src="assets/img/icono_fav.png" alt="Favoritos">
@@ -70,10 +72,62 @@
                 </div>
 
             </aside>
+            <div class="col-12 col-lg-10 order-2 order-lg-2 p-3">
+             <h5 class="mb-3">Publicaciones</h5>
+                <div id="publicaciones" class="row g-4"></div>
+            </div> 
+        </div>
+    </div>
+    <div class="modal fade" id="modalPublicar" tabindex="-1" aria-labelledby="modalPublicarLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header bg-primary text-white">
+                    <h5 class="modal-title" id="modalPublicarLabel">Publicar Nuevo Producto</h5>
+                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="formulario-producto">
+                        <div class="mb-3">
+                            <label for="inputNombre" class="form-label">Nombre del producto</label>
+                            <input type="text" class="form-control" id="inputNombre" required placeholder="Ej: Libro Cálculo...">
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label for="inputPrecio" class="form-label">Precio ($)</label>
+                                <input type="number" class="form-control" id="inputPrecio" required min="1">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label for="selectCategoria" class="form-label">Categoría</label>
+                                <select class="form-select" id="selectCategoria" required>
+                                    <option value="">Selecciona una...</option>
+                                </select>
+                            </div>
+                        </div>
 
+                        <div class="mb-3">
+                            <label for="inputDescripcion" class="form-label">Descripción</label>
+                            <textarea class="form-control" id="inputDescripcion" rows="3" required placeholder="Estado del producto, detalles..."></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputImagen" class="form-label">URL de la Imagen</label>
+                            <input type="url" class="form-control" id="inputImagen" required placeholder="https://ejemplo.com/imagen.jpg">
+                        </div>
+
+                        <div class="mb-3">
+                            <label for="inputVendedor" class="form-label">Tus Datos (Nombre y Carrera)</label>
+                            <input type="text" class="form-control" id="inputVendedor" required placeholder="Ej: Juan Pérez (Ingeniería)">
+                        </div>
+
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary">Publicar Producto</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
         </div>
     </div>
 
 </body>
-
 </html>
