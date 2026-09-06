@@ -27,18 +27,21 @@
             </button>
 
             <div class="collapse navbar-collapse" id="navbarContenido">
-                <div class="navbar-actions">
-
+                <div class="navbar-actions d-flex align-items-center gap-3">
                     <a href="#" class="btn btn-primary btn-publicacion" data-bs-toggle="modal" data-bs-target="#modalPublicar">
                         Crear nueva publicación
                     </a>
-
-                    <a href="#" class="nav-icon" aria-label="Favoritos">
-                        <img src="assets/img/icono_fav.png" alt="Favoritos">
+                    <a href="#" class="nav-icon position-relative" aria-label="Favoritos" data-bs-toggle="offcanvas" data-bs-target="#offcanvasFavoritos">
+                        <img src="assets/img/icono_fav.png" alt="Favoritos" style="width: 28px;">
+                        <span id="contador-favoritos" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none; font-size: 0.7rem;">
+                            0
+                        </span>
                     </a>
-
-                    <a href="#" class="nav-icon" aria-label="Carrito">
-                        <img src="assets/img/icono_carrito.png" alt="Carrito">
+                    <a href="#" class="nav-icon position-relative" aria-label="Carrito" data-bs-toggle="offcanvas" data-bs-target="#offcanvasCarrito">
+                        <img src="assets/img/icono_carrito.png" alt="Carrito" style="width: 28px;">
+                        <span id="contador-carrito" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" style="display: none; font-size: 0.7rem;">
+                            0
+                        </span>
                     </a>
 
                 </div>
@@ -48,10 +51,9 @@
 
     <div class="container-fluid">
         <div class="row">
-
             <aside class="col-12 col-lg-2 order-1 order-lg-1 border-end p-3">
-                <input type="text" class="form-control mb-3" placeholder="Buscador">
-
+                <input type="text" id="inputBuscador" class="form-control mb-3" placeholder="Buscar productos">
+                
                 <div class="mb-3 bg-light">
                     <h6>Filtro de precios</h6>
                     <label>Min <input type="number" class="form-control mb-2"></label>
@@ -76,6 +78,27 @@
              <h5 class="mb-3">Publicaciones</h5>
                 <div id="publicaciones" class="row g-4"></div>
             </div> 
+        </div>
+    </div>
+    <div class="modal fade" id="modalDetalles" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header bg-light">
+                    <h5 class="modal-title" id="detalleNombre">Nombre del Producto</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    <img id="detalleImagen" src="" alt="Producto" class="img-fluid mb-3 rounded" style="max-height: 250px; object-fit: contain; width: 100%;">
+                    <h4 id="detallePrecio" class="text-primary fw-bold"></h4>
+                    <span id="detalleCategoria" class="badge bg-secondary mb-3"></span>
+                    <p id="detalleDescripcion" class="text-start"></p>
+                    <hr>
+                    <p class="text-start text-muted small mb-0"><strong>Vendedor:</strong> <span id="detalleVendedor"></span></p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
         </div>
     </div>
     <div class="modal fade" id="modalPublicar" tabindex="-1" aria-labelledby="modalPublicarLabel" aria-hidden="true">
@@ -125,6 +148,16 @@
                         </div>
                     </form>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasFavoritos" aria-labelledby="offcanvasFavoritosLabel">
+        <div class="offcanvas-header bg-danger text-white border-bottom">
+            <h5 class="offcanvas-title" id="offcanvasFavoritosLabel">❤️ Mis Favoritos</h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas" aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column">
+            <div id="items-favoritos" class="flex-grow-1 overflow-auto">
             </div>
         </div>
     </div>
