@@ -21,10 +21,10 @@ categorias.forEach(function (categoria) {
     boton.setAttribute("data-categoria-id", categoria.id);
     contenedorCategorias.appendChild(boton);
 
-    boton.addEventListener('click', function() {
+    boton.addEventListener('click', function () {
         const idCategoria = boton.dataset.categoriaId;
 
-        const productosFiltrados = productos.filter(function(producto) {
+        const productosFiltrados = productos.filter(function (producto) {
             return producto.categoria === idCategoria;
         });
 
@@ -33,20 +33,20 @@ categorias.forEach(function (categoria) {
 });
 
 const limpiarCategorias = document.getElementById("btn-limpiar-categoria")
-limpiarCategorias.addEventListener('click', function(){
+limpiarCategorias.addEventListener('click', function () {
     renderizarCatalogo();
 });
 
 
 //BUSCADOR DE PRODUCTOS
 const inputBuscador = document.getElementById('inputBuscador');
-inputBuscador.addEventListener('input', function() {
+inputBuscador.addEventListener('input', function () {
     const textoBuscado = inputBuscador.value.toLowerCase();
 
-    const productosFiltrados = productos.filter(function(producto) {
+    const productosFiltrados = productos.filter(function (producto) {
         const nombreProducto = producto.nombre.toLowerCase();
         const descripcionProducto = producto.descripcion.toLowerCase();
-        
+
         return nombreProducto.includes(textoBuscado) || descripcionProducto.includes(textoBuscado);
     });
 
@@ -63,7 +63,7 @@ function filtrarPorPrecio() {
     const min = inputMin.value === "" ? 0 : Number(inputMin.value);
     const max = inputMax.value === "" ? Infinity : Number(inputMax.value);
 
-    const productosFiltrados = productos.filter(function(producto){
+    const productosFiltrados = productos.filter(function (producto) {
         return producto.precio >= min && producto.precio <= max;
     });
 
@@ -120,14 +120,14 @@ function renderizarCatalogo(listaProductos = productos) {
 
     if (listaProductos.length === 0) {
         contenedor.innerHTML = '<div class="col-12"><h5 class="text-center text-muted mt-5">No se encontraron productos</h5></div>';
-        return; 
+        return;
     }
 
     listaProductos.forEach(producto => {
         const esFavorito = favoritos.some(fav => fav.id === producto.id);
         const iconoCorazon = esFavorito ? '❤️' : '🤍';
 
-        const categoriaEncontrada = categorias.find(function(c) {
+        const categoriaEncontrada = categorias.find(function (c) {
             return c.id === producto.categoria;
         });
         const nombreCategoria = categoriaEncontrada ? categoriaEncontrada.nombre : producto.categoria;
@@ -150,8 +150,7 @@ function renderizarCatalogo(listaProductos = productos) {
                     <img src="${producto.imagen}" 
                          class="card-img-top p-2" 
                          alt="${producto.nombre}" 
-                         style="width: 100%; height: 200px; object-fit: contain; background-color: #ffffff;"
-                         onerror="this.onerror=null; this.src='https://dummyimage.com/300x200/dee2e6/6c757d.jpg&text=Sin+Imagen';">
+                         style="width: 100%; height: 200px; object-fit: contain; background-color: #ffffff;">
                     
                     <div class="card-body d-flex flex-column">
                         <span class="badge bg-secondary mb-2 align-self-start">${nombreCategoria}</span>
@@ -180,7 +179,7 @@ document.addEventListener('DOMContentLoaded', renderizarCatalogo);
 
 const selectCategoria = document.getElementById('selectCategoria');
 
-categorias.forEach(function(categoria) {
+categorias.forEach(function (categoria) {
     const option = document.createElement('option');
     option.value = categoria.id;
     option.textContent = categoria.nombre;
@@ -189,7 +188,7 @@ categorias.forEach(function(categoria) {
 
 const formulario = document.getElementById('formulario-producto');
 
-formulario.addEventListener('submit', function(evento) {
+formulario.addEventListener('submit', function (evento) {
     evento.preventDefault();
 
     const nombre = document.getElementById('inputNombre').value;
@@ -227,11 +226,15 @@ let carrito = [];
 
 function agregarAlCarrito(idProducto) {
     const productoEncontrado = productos.find(producto => producto.id === idProducto);
-    
+
     if (productoEncontrado) {
+        const yaEstaEnCarrito = carrito.some(producto => producto.id === idProducto);
+        if (yaEstaEnCarrito){
+            return;
+        }
+
         carrito.push(productoEncontrado);
         renderizarCarrito();
-        alert(`¡"${productoEncontrado.nombre}" agregado al carrito!`);
     }
 }
 
@@ -253,13 +256,16 @@ function renderizarCarrito() {
         carrito.forEach((producto, indice) => {
             total += producto.precio;
             contenedor.innerHTML += `
-                <div class="d-flex justify-content-between align-items-center mb-3 border-bottom pb-2">
-                    <div style="width: 70%;">
+                <div class="d-flex align-items-center mb-3 border-bottom pb-2">
+                    <img src="${producto.imagen}" 
+                        alt="${producto.nombre}" 
+                        style="width: 60px; height: 60px; object-fit: contain; background-color: #fff;" 
+                        class="rounded me-2">
+                    <div style="width: 55%;">
                         <h6 class="mb-0 text-truncate" style="font-size: 0.9rem;">${producto.nombre}</h6>
                         <small class="text-primary fw-bold">$${producto.precio.toLocaleString('es-CL')}</small>
                     </div>
-                    <!-- Botón para eliminar del carrito -->
-                    <button class="btn btn-sm btn-outline-danger" onclick="eliminarDelCarrito(${indice})">
+                    <button class="btn btn-sm btn-outline-danger ms-auto" onclick="eliminarDelCarrito(${indice})">
                         X
                     </button>
                 </div>
@@ -282,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
 //VER DETALLES DE PRODUCTO
 function verDetalles(id) {
     const producto = productos.find(p => p.id === id);
-    
+
     if (producto) {
         document.getElementById('detalleNombre').textContent = producto.nombre;
         document.getElementById('detalleImagen').src = producto.imagen;
@@ -290,7 +296,7 @@ function verDetalles(id) {
         document.getElementById('detalleCategoria').textContent = producto.categoria;
         document.getElementById('detalleDescripcion').textContent = producto.descripcion;
         document.getElementById('detalleVendedor').textContent = producto.vendedor;
-        
+
         const modal = new bootstrap.Modal(document.getElementById('modalDetalles'));
         modal.show();
     }
@@ -300,13 +306,13 @@ function verDetalles(id) {
 //ELIMINAR PRODUCTOS
 function eliminarProducto(idBuscado) {
     const confirmacion = confirm("¿Estás seguro de que deseas eliminar esta publicación?");
-    
+
     if (confirmacion) {
         const indice = productos.findIndex(producto => producto.id === idBuscado);
-        
+
         if (indice !== -1) {
             productos.splice(indice, 1);
-            
+
             renderizarCatalogo();
         }
     }
@@ -318,16 +324,16 @@ let favoritos = [];
 
 function toggleFavorito(idProducto) {
     const productoEncontrado = productos.find(p => p.id === idProducto);
-    
+
     if (productoEncontrado) {
         const indice = favoritos.findIndex(fav => fav.id === idProducto);
-        
+
         if (indice === -1) {
             favoritos.push(productoEncontrado);
         } else {
             favoritos.splice(indice, 1);
         }
-        
+
         renderizarCatalogo();
         actualizarContadorFavoritos();
     }
@@ -335,7 +341,7 @@ function toggleFavorito(idProducto) {
 
 function actualizarContadorFavoritos() {
     const contador = document.getElementById('contador-favoritos');
-    
+
     if (contador) {
         if (favoritos.length === 0) {
             contador.style.display = 'none';
@@ -348,10 +354,10 @@ function actualizarContadorFavoritos() {
 
 function toggleFavorito(idProducto) {
     const productoEncontrado = productos.find(p => p.id === idProducto);
-    
+
     if (productoEncontrado) {
         const indice = favoritos.findIndex(fav => fav.id === idProducto);
-        
+
         if (indice === -1) {
             favoritos.push(productoEncontrado);
         } else {
