@@ -1,3 +1,5 @@
+// SIDEBAR
+
 const categorias = [
     { id: "snacks", nombre: "Snacks y Colaciones" },
     { id: "deportes", nombre: "Deportes y Vida Sana" },
@@ -10,13 +12,68 @@ const categorias = [
     { id: "arriendos", nombre: "Arriendos y Roommates" }
 ];
 
+//CATEGORIAS
 const contenedorCategorias = document.getElementById("nombre-categorias");
 categorias.forEach(function (categoria) {
     const boton = document.createElement("button");
     boton.textContent = categoria.nombre;
     boton.className = "btn btn-light w-100 mb-2";
+    boton.setAttribute("data-categoria-id", categoria.id);
     contenedorCategorias.appendChild(boton);
+
+    boton.addEventListener('click', function() {
+        const idCategoria = boton.dataset.categoriaId;
+
+        const productosFiltrados = productos.filter(function(producto) {
+            return producto.categoria === idCategoria;
+        });
+
+        renderizarCatalogo(productosFiltrados);
+    });
 });
+
+const limpiarCategorias = document.getElementById("btn-limpiar-categoria")
+limpiarCategorias.addEventListener('click', function(){
+    renderizarCatalogo();
+});
+
+
+//BUSCADOR DE PRODUCTOS
+const inputBuscador = document.getElementById('inputBuscador');
+inputBuscador.addEventListener('input', function() {
+    const textoBuscado = inputBuscador.value.toLowerCase();
+
+    const productosFiltrados = productos.filter(function(producto) {
+        const nombreProducto = producto.nombre.toLowerCase();
+        const descripcionProducto = producto.descripcion.toLowerCase();
+        
+        return nombreProducto.includes(textoBuscado) || descripcionProducto.includes(textoBuscado);
+    });
+
+    renderizarCatalogo(productosFiltrados);
+});
+//BUSCADOR DE PRODUCTOS
+
+//FILTRO PRECIOS
+const inputMin = document.getElementById("precio-min");
+const inputMax = document.getElementById("precio-max");
+const btnFiltrarPrecio = document.getElementById("btn-filtrar-precio");
+
+function filtrarPorPrecio() {
+    const min = inputMin.value === "" ? 0 : Number(inputMin.value);
+    const max = inputMax.value === "" ? Infinity : Number(inputMax.value);
+
+    const productosFiltrados = productos.filter(function(producto){
+        return producto.precio >= min && producto.precio <= max;
+    });
+
+    renderizarCatalogo(productosFiltrados);
+}
+btnFiltrarPrecio.addEventListener('click', filtrarPorPrecio);
+//FILTRO PRECIOS
+
+
+// PRODUCTOS
 
 const productos = [
     {
@@ -24,8 +81,8 @@ const productos = [
         nombre: "Libro: Cálculo de Stewart 8va Edición",
         precio: 25000,
         descripcion: "Libro en excelente estado, ideal para primer año de ingeniería. Sin rayones.",
-        imagen: "https://via.placeholder.com/300x200?text=Libro+Calculo",
-        categoria: "Libros",
+        imagen: "https://http2.mlstatic.com/D_NQ_NP_970021-MLU77741616257_072024-O.webp",
+        categoria: "libros",
         vendedor: "Juan Pérez (Ingeniería Civil)"
     },
     {
@@ -33,8 +90,8 @@ const productos = [
         nombre: "Calculadora Científica Casio FX-991",
         precio: 15000,
         descripcion: "Casi nueva, la vendo porque me regalaron otra. Incluye tapa protectora.",
-        imagen: "https://via.placeholder.com/300x200?text=Calculadora+Casio",
-        categoria: "Accesorios",
+        imagen: "https://calculadoras-production.s3.sa-east-1.amazonaws.com/images/991ESPLUSNEGRA.webp",
+        categoria: "tecnologia",
         vendedor: "María González (Arquitectura)"
     },
     {
@@ -42,8 +99,8 @@ const productos = [
         nombre: "Notebook Dell Inspiron 15",
         precio: 350000,
         descripcion: "Intel Core i5, 8GB RAM, 256GB SSD. Batería dura 4 horas. Detalles de uso.",
-        imagen: "https://via.placeholder.com/300x200?text=Notebook+Dell",
-        categoria: "Computadores",
+        imagen: "https://i5.walmartimages.cl/asr/165e9694-8d8d-4441-9f34-8fc2d2b26f53.71d52b3fa4d5fb25e7b5d6eae7574f4f.jpeg?odnHeight=2000&odnWidth=2000&odnBg=ffffff",
+        categoria: "tecnologia",
         vendedor: "Carlos Ruiz (Informática)"
     },
     {
@@ -51,8 +108,8 @@ const productos = [
         nombre: "Raqueta de Tenis Wilson",
         precio: 40000,
         descripcion: "Perfecta para los electivos de deportes. Cuerdas recién cambiadas.",
-        imagen: "https://via.placeholder.com/300x200?text=Raqueta+Tenis",
-        categoria: "Deportes",
+        imagen: "https://cdnx.jumpseller.com/padel-shop-chile/image/75728640/resize/719/719?1776090972",
+        categoria: "deportes",
         vendedor: "Ana Silva (Enfermería)"
     }
 ];
@@ -62,19 +119,23 @@ function renderizarCatalogo(listaProductos = productos) {
     contenedor.innerHTML = '';
 
     if (listaProductos.length === 0) {
-        contenedor.innerHTML = '<div class="col-12"><h5 class="text-center text-muted mt-5">No se encontraron productos 😢</h5></div>';
+        contenedor.innerHTML = '<div class="col-12"><h5 class="text-center text-muted mt-5">No se encontraron productos</h5></div>';
         return; 
     }
 
     listaProductos.forEach(producto => {
         const esFavorito = favoritos.some(fav => fav.id === producto.id);
         const iconoCorazon = esFavorito ? '❤️' : '🤍';
+
+        const categoriaEncontrada = categorias.find(function(c) {
+            return c.id === producto.categoria;
+        });
+        const nombreCategoria = categoriaEncontrada ? categoriaEncontrada.nombre : producto.categoria;
+
         const tarjetaHtml = `
             <div class="col-12 col-md-6 col-lg-3">
                 <div class="card h-100 shadow-sm position-relative">
-                    
-                    <!-- NUEVO: Botón de Favorito (Izquierda) -->
-                    <button class="btn btn-light btn-sm position-absolute top-0 start-0 m-2 rounded-circle shadow-sm" 
+                    <button class="btn btn-dark btn-sm position-absolute top-0 start-0 m-2 rounded-circle shadow-sm" 
                             style="z-index: 10; width: 30px; height: 30px; padding: 0; line-height: 1;"
                             onclick="toggleFavorito(${producto.id})"
                             title="Agregar a favoritos">
@@ -93,7 +154,7 @@ function renderizarCatalogo(listaProductos = productos) {
                          onerror="this.onerror=null; this.src='https://dummyimage.com/300x200/dee2e6/6c757d.jpg&text=Sin+Imagen';">
                     
                     <div class="card-body d-flex flex-column">
-                        <span class="badge bg-secondary mb-2 align-self-start">${producto.categoria}</span>
+                        <span class="badge bg-secondary mb-2 align-self-start">${nombreCategoria}</span>
                         <h5 class="card-title">${producto.nombre}</h5>
                         <h6 class="card-subtitle mb-2 text-primary fw-bold">$${producto.precio.toLocaleString('es-CL')}</h6>
                         <p class="card-text flex-grow-1" style="font-size: 0.9rem;">${producto.descripcion}</p>
@@ -121,7 +182,7 @@ const selectCategoria = document.getElementById('selectCategoria');
 
 categorias.forEach(function(categoria) {
     const option = document.createElement('option');
-    option.value = categoria.nombre;
+    option.value = categoria.id;
     option.textContent = categoria.nombre;
     selectCategoria.appendChild(option);
 });
@@ -217,22 +278,6 @@ document.addEventListener('DOMContentLoaded', () => {
     renderizarCarrito();
 });
 //CARRITO DE COMPRAS
-
-//BUSCADOR DE PRODUCTOS
-const inputBuscador = document.getElementById('inputBuscador');
-inputBuscador.addEventListener('input', function() {
-    const textoBuscado = inputBuscador.value.toLowerCase();
-
-    const productosFiltrados = productos.filter(function(producto) {
-        const nombreProducto = producto.nombre.toLowerCase();
-        const descripcionProducto = producto.descripcion.toLowerCase();
-        
-        return nombreProducto.includes(textoBuscado) || descripcionProducto.includes(textoBuscado);
-    });
-
-    renderizarCatalogo(productosFiltrados);
-});
-//BUSCADOR DE PRODUCTOS
 
 //VER DETALLES DE PRODUCTO
 function verDetalles(id) {
